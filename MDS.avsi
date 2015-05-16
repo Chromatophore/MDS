@@ -14,16 +14,16 @@
 #	Done Divorce the Layouts from the Tweening
 #	Done 50% Redo the work functions to support ease type functions along both vectors of movement
 #	Done Integration of rotation into the tweening functions as standard
-# Done Use a 'better' rotation library as standard, considering 'rotate', has less of the uneeded features of zoom
-#	DONE Add 3DS support either via a fork for by neatening up my insane spam of functions. The main thing to do is to seperate the 'shouting at people' values when checking sizes or whatever?
+#	Done Use a 'better' rotation library as standard, considering 'rotate', has less of the uneeded features of zoom
+#	Done Add 3DS support either via a fork for by neatening up my insane spam of functions. The main thing to do is to seperate the 'shouting at people' values when checking sizes or whatever?
 #	Done Rename my clip position/size variables to be a bit more sensible
 #	Done Improve the rescaling functions to be better behaved
 
 # TO DO LIST:
-# DONE Automate MTwn_Recall process with MTwn_Auto_Recall
-# DONE Allow for setting temporary order overrides
-# DONE Change Rotation interpolater to find shortest rotational distance between two given values
-# allow for picking output sizes between wide and 5x4
+# Done Automate MTwn_Recall process with MTwn_Auto_Recall
+# Done Allow for setting temporary order overrides
+# Done Change Rotation interpolater to find shortest rotational distance between two given values
+# Done allow for picking output sizes between wide and 5x4
 # Done Fix audio
 # Done Fix video
 
@@ -1013,12 +1013,12 @@ function MDS_CTD_3DS(int Top_w,int Top_h,int Bot_w, int Bot_h, int Top_x, int To
 function MDS_Custom(clip c, int "frame", int "frame2")
 {
 	frame = default(frame,0)
-	MDS_SameCode_Root(c,"",false,frame,frame2)
+	MDS_SameCode_Root(c,"#      Custom()",false,frame,frame2)
 }
 function MDS_CustomA(clip c, int "frame", int "frame2")
 {
 	frame = default(frame,0)
-	MDS_SameCode_Root(c,"",true,frame,frame2)
+	MDS_SameCode_Root(c,"#      Custom()",true,frame,frame2)
 }
 
 ###################################
@@ -1209,7 +1209,7 @@ function MDS_SameCode_Root(clip c, string LayoutName, bool IsAnimated, int frame
 	# 2) Forget about frame2 for now and simply use recursion!
 	frame2 = default(frame2,-100)
 
-	# 3) Apply the layout that has been provided
+	# 3) Apply the layout that has been provided, if we have been provided one (eg custom will not provide one, although it will probably supply #Custom or something
 	try {
 		l = LayoutName != "" ? eval(LayoutName) : 1
 	} catch (err_msg) {
