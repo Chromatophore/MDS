@@ -984,9 +984,9 @@ function MDS_TPIPA(clip c, int "frame", int "frame2")
 # Used to define custom layouts
 function MDS_Custom_TargetData(int Top_w,int Top_h,int Bot_w, int Bot_h, int Top_x, int Top_y, int Bot_x, int Bot_y, int "Top_r", int "Bot_r", bool "Top_Cent", bool "Bot_Cent")
 {
-	MDS_CTD_DS(Top_w,Top_h,Bot_w,Bot_h,Top_x,Top_y,Bot_x,Bot_y,Top_r,Bot_r,Top_Cent,Bot_Cent)
+	MDS_CTD_DS(		Top_w,Top_h,	Bot_w,Bot_h,	Top_x,Top_y,	Bot_x,Bot_y,	Top_r,Bot_r,	Top_Cent,Bot_Cent)
 	# Most likely, people will only be using one or the other. If not, they can call MDS_CTD_DS & MDS_CTD_3DS seperately
-	MDS_CTD_3DS(Top_w,Top_h,Bot_w,Bot_h,Top_x,Top_y,Bot_x,Bot_y,Top_r,Bot_r,Top_Cent,Bot_Cent)
+	MDS_CTD_3DS(	Top_w,Top_h,	Bot_w,Bot_h,	Top_x,Top_y,	Bot_x,Bot_y,	Top_r,Bot_r,	Top_Cent,Bot_Cent)
 }
 function MDS_CTD_DS(int Top_w,int Top_h,int Bot_w, int Bot_h, int Top_x, int Top_y, int Bot_x, int Bot_y, int "Top_r", int "Bot_r", bool "Top_Cent", bool "Bot_Cent")
 {
@@ -1734,15 +1734,14 @@ function MTwn_Rotate(clip c, int w1, int h1, int x1, int y1, int r1,  int w2, in
 	###
 
 	# This simply interpolates between the two given values. This does not attempt to find the shortest rotational distance
+	# We use a function in SetTargets to remape rotations into a common space, we may not always want this so this function remains ambilent to this
+	# concept at this point
 	r = float(r1) + (float(r2-r1) * ratio)
 
-	# Remove any rotations above/below 360/0, nb: We never expect to see a rotation outside of -360 to 720
-
-	# Map all our rotations to the space of -180 to 179
-#	r = ((r + 180) % 360) - 180
-
-	# Multiply by 4 to round only 0.125 down to 0, as even small rotations are often visible/required, especially due to ease functions
+	# However, when deciding if we should use a 90 degree rotation matrix over a rotation plugin, we really ought to make that decision here.
+	# So, 1) Multiply by 4 to round only 0.125 down to 0, as even small rotations are often visible/required, mainly due to ease functions
 	rint = round(r * 4)
+	# Map this to a detection range:
 	rint = ((rint + 180 * 4) % (360 * 4)) - (180 * 4)
 
 	skipit = false
@@ -1754,7 +1753,7 @@ function MTwn_Rotate(clip c, int w1, int h1, int x1, int y1, int r1,  int w2, in
 	""") : 0
 
 	# Is it 90?
-	nan = rint == 360 ? eval("""
+	nan = rint == (90 * 4) ? eval("""
 	b = BlankClip(c)
 	c = c.TurnRight()
 
@@ -1763,13 +1762,13 @@ function MTwn_Rotate(clip c, int w1, int h1, int x1, int y1, int r1,  int w2, in
 	""") : 0
 
 	# Is it -180?
-	nan = rint == -720 ? eval("""
+	nan = rint == -(180 * 4) ? eval("""
 	c = c.Turn180()
 	skipit = true
 	""") : 0
 
 	# Is it -90?
-	nan = rint == -360 ? eval("""
+	nan = rint == -(90 * 4) ? eval("""
 	b = BlankClip(c)
 	c = c.TurnLeft()
 
@@ -1797,7 +1796,6 @@ function MTwn_Rotate(clip c, int w1, int h1, int x1, int y1, int r1,  int w2, in
 	# Return clip
 	return c
 }
-
 
 ###################################
 # MTwn_SetupID does the basic legwork of setting up variables
@@ -1864,6 +1862,9 @@ function MTwn_SetTargets(string "ID", int "x", int "y", int "w", int "h", int "r
 		centerstring = is_center == true ? "y" : "y + round(h / 2)"
 		nan = y == -9999 ? 0 : eval(str + "_Ty = " + centerstring)
 
+		# Possibly correct the rotation:
+		r = MTwn_RotationMap(r)
+
 		# Update the remaining targets:
 		eval(str + "_Tw = w")
 		eval(str + "_Th = h")
@@ -1871,11 +1872,21 @@ function MTwn_SetTargets(string "ID", int "x", int "y", int "w", int "h", int "r
 	}
 	catch (err_msg)
 	{
-		# If this fails, this frame probably doesn't exist at all, so we don't care.
+		# If this fails, this frame probably doesn't exist at all, and we probably don't care because we're just precautionarily setting them
 	}
 
 	MTwn_LastID = ID
 }
+
+###################################
+# This prevents us from 'over rotating', and leaves the worker functions ambivilent about if they should be able to not use minimum rotational distances or not
+function MTwn_RotationMap(int r)
+{
+	r = r >= 180 ? MTwn_RotationMap(r - 360) : r
+	r = r < -180 ? MTwn_RotationMap(r + 360) : r
+	return r
+}
+
 
 ###################################
 # MTwn_Shift shifts the current vars into the O vars, and then the T vars into the current vars
