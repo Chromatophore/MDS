@@ -961,7 +961,7 @@ function intMDS_TPIP()
 	MTwn_SetTargets("T",round((MDS_Wrk_w - MDS_A_4w) / 2),0,											MDS_A_w,MDS_A_h,	0,false)
 	MTwn_SetTargets("B",round((MDS_Wrk_w - MDS_A_4w) / 2),0,											MDS_A_4w,MDS_A_4h,	0,false)
 
-	MTwn_SetTargets("T3D",round((M3DS_Wrk_w - M3DS_B_4w) / 2) - M3DS_T_w,0,								M3DS_T_w,M3DS_T_h,	0,false)
+	MTwn_SetTargets("T3D",round((M3DS_Wrk_w - M3DS_B_4w) / 2),0,										M3DS_T_w,M3DS_T_h,	0,false)
 	MTwn_SetTargets("B3D",round((M3DS_Wrk_w - M3DS_B_4w) / 2),0,										M3DS_B_4w,M3DS_B_4h,	0,false)
 }
 function MDS_TPIP(clip c, int "frame", int "frame2")
