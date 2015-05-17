@@ -1,58 +1,29 @@
-# MDS
-# This library provides a collection of easy to use functions to help generate Let's Play type videos from DS and 3DS footage.
-# It also includes an animation engine that can generate inbetween frames for moving from one layout to another ('tweening').
-# The output it creates is intended for use with Youtube, and as such will generate a video that will qualify for the HD pipeline.
-# It expects input video in a fairly standard format, with the 2 screens stacked on top of one another.
-# For a DS game, this will be 256x384. For a 3DS game, this will be 400x480, with the lower screen centered in its section (since it is only 320x240)
+#######################################################################
+#######################################################################
+#                                                                     #
+#      MDS - DS and 3DS Multiscreen display library for Avisynth.     #
+#                                                                     #
+#######################################################################
+#######################################################################
+
+# This file should be imported into your avs file, or if you use it a lot, go in your Avisynth plugins directory.
+
+# This library provides a collection of easy to use functions to help generate Let's Play type videos from recorded DS and 3DS footage.
+# It does not assist with recording this footage.
+
+# It also includes an animation engine, MTween, which generates inbetween frames for moving from one layout type to another
+# This process is generally called 'tweening'.
+# MTween could be repurposed for other tasks, but is packaged within this AVSI file so you only need to import/install one file.
+
+# The output of this AVS is intended for uploading to youtube, and as such, generates non-standard (ie, not 720p/1080p) HD videos
+
+# For input, we expect a 1x magnification video with the screens directly stacked vertically on top of one another
+# For a DS game, this will be a 256x384 video. For a 3DS game, this will be 400x480 video, with the lower screen centered in its section (since it is only 320x240)
 # A couple of png images are available that will show what a video should look like.
 
 # Temporary Readme can be found here:       http://lpix.org/sslptest/index.php?id=10443
 
-# Changelog:
-# R5, big rewrite:
-#Goals:
-#	Done Divorce the Layouts from the Tweening
-#	Done 50% Redo the work functions to support ease type functions along both vectors of movement
-#	Done Integration of rotation into the tweening functions as standard
-#	Done Use a 'better' rotation library as standard, considering 'rotate', has less of the uneeded features of zoom
-#	Done Add 3DS support either via a fork for by neatening up my insane spam of functions. The main thing to do is to seperate the 'shouting at people' values when checking sizes or whatever?
-#	Done Rename my clip position/size variables to be a bit more sensible
-#	Done Improve the rescaling functions to be better behaved
-
-# TO DO LIST:
-# Done Automate MTwn_Recall process with MTwn_Auto_Recall
-# Done Allow for setting temporary order overrides
-# Done Change Rotation interpolater to find shortest rotational distance between two given values
-# Done allow for picking output sizes between wide and 5x4
-# Done Fix audio
-# Done Fix video
-
-# Revions 4:
-# More stuff for R4 from YamiNoSenshi. Thanks YamiNoSenshi!
-# Done: Added Vertical Mode, just call MDS_SetVerticalMode() And use MDS_Book or MDS_BookGap! Technically works with everything else but uses a 3x multiple - use after SetParams
-# Done: Added transition effect to go from VertStack to... Vertstack rotated on its side? You probably want to call MDS_BookA afterwards. -
-#	MDS_VStackToRotated and MDS_RotatedToVStack. They have an optional param to select which way to rotate which will be remembered across multiple calls.
-# Done: Added 'step' params to resize and positioning function, in case this is useful for more advanced functions. Will just be an integer from 0 to 29.
-# Done: Fixed resize methods for immediate function to match those used in animated (relevant to lower res videos)
-# Done: Changed the way MDS_AnimFunc and MDS_PositionFunc get called, now they let you change the core animation that's at work, which lets you actually accomplish things by changing them, unlike previous attempts.
-# Done: Added MDS_DraftSettings and MDS_QualitySettings, which are some presets for blockpreserve and resize filters so that people who don't actually want
-#   to know every detail of this stupid overengineered system can get smoother (but slower to process) results
-
-# Revision 3:  (# NB: original Rev 3 has typo, was line 322, has -MDS_QSzY instead of -MDS_QSzX )
-# Got some ideas of stuff to add for R3 from Admiral H. Curtiss, and Captain Flame Guy, and the Tech Support Crowd helped a bit too
-# Done: Fixed some stupid bugs with TopO and BottomO
-# Done: Added in automated better sizing below 1x scale
-# Done: Add 4th param to most 3 param calls to 'undo'
-# Done: FlipFlop function?
-# Done: Create functions that allow you to change additional filters
-# Done: Add in functions for help with custom transitions
-
-# Revision 2:
-# Done: Have some way to have frame A drawn before frame B, should be pretty easy to do with an eval/default values
-# Nope: Probably add some more examples?
-# Done: Make a function to set the variables yourself and then call functions to perform them
-# Done: Make some functions that make it easier to perform eg Fades/Dissolves without desyncing the two videos
-
+# This is revision 5 of this library. For a list of Changes, see changes.txt
 
 ###################################################
 ############# Variables and Constants #############
@@ -74,6 +45,7 @@ global MDS_ShowLayoutName = False
 # EG just returning ratio would be linear interpolation between them.
 global MTwn_GB_EaseFunction = "ratio = MTwn_SineInOut(ratio)"
 
+# These variables override the eases in each of the 3 interpolation workers (ReSize, RoTate and PoSition)
 global MTwn_RS_EaseFunction = ""
 global MTwn_RT_EaseFunction = ""
 global MTwn_PS_EaseFunction = ""
@@ -190,16 +162,6 @@ global M3DS_T_real_w = 400
 global M3DS_T_real_h = 240
 global M3DS_B_real_w = 320
 global M3DS_B_real_h = 240
-
-
-
-
-###################################
-# And this just makes our video return something if we accidently view it
-BlankClip(length=240, width=640, height=480, pixel_type="RGB32", fps=30, fps_denominator=1, audio_rate=44100, stereo=False, sixteen_bit=True, color=$000000)
-Subtitle("This is MDS.avsi! Import this script into your AVS!")
-Subtitle("Also, load your avi after you import, because this clip returned by the import line!",y = 50)
-
 
 ######################################################################
 ######################################################################
@@ -429,10 +391,9 @@ function intMDS_BotC()
 	MTwn_SetTargets("T", round((MDS_Wrk_w - MDS_A_4w - MDS_A_w) / 2),0, 								MDS_A_w,MDS_A_h, 0,false)
 	MTwn_SetTargets("B", round((MDS_Wrk_w - MDS_A_4w - MDS_A_w) / 2) + MDS_A_w ,0, 						MDS_A_4w,MDS_A_4h, 0,false)
 
-	# Ensure we always at least show the bottom only? Eh, I don't think anyone will use this layouts for 3DS
-	# Clarification: If someone made the Workspace narrower, this would not be laid out as advertised
-	MTWN_SetTargets("T3D", round((M3DS_Wrk_w - M3DS_T_w - M3DS_B_4w) / 2), 0,  							M3DS_T_w,M3DS_T_h, 0,false)
-	MTWN_SetTargets("B3D", round((M3DS_Wrk_w - M3DS_T_w - M3DS_B_4w) / 2) + M3DS_T_w, 0, 				M3DS_B_4w, M3DS_B_4h, 0,false)
+	# Ensure we always at least show the bottom only - I don't think anyone will use this layouts for 3DS anyway
+	MTWN_SetTargets("T3D", M3DS_Wrk_w - M3DS_B_4w - M3DS_T_w,0,  								M3DS_T_w,M3DS_T_h, 0,false)
+	MTWN_SetTargets("B3D", M3DS_Wrk_w - M3DS_B_4w, 0, 											M3DS_B_4w, M3DS_B_4h, 0,false)
 }
 function MDS_BotC(clip c, int "frame", int "frame2")
 {
@@ -1163,7 +1124,7 @@ function MDS_CustomTransition(clip c, int frame, string layout, string funcname)
 
 ###################################
 # Recursive alternating function
-function MDS_flipflop(clip c, clip raw, string func1, string func2, int f1, int "f2", \
+function MDS_flipflop(clip c, string func1, string func2, int f1, int "f2", \
 int "f3", int "f4", int "f5", int "f6",\
 int "f7", int "f8", int "f9", int "f10",\
 int "f11", int "f12", int "f13", int "f14",\
@@ -1179,11 +1140,11 @@ int "f39", int "f40", int "f41", int "f42")
 		f3 = Default(f3,-100)
 		f4 = Default(f4,-100)
 
-		r = Eval(func1 + "(c,raw,f1)")
-		r = (f2 > -100) ? Eval(func2 + "(r,raw,f2)") : r
+		r = Eval(func1 + "(c,f1)")
+		r = (f2 > -100) ? Eval(func2 + "(r,f2)") : r
 
 		i = (f3 > -100) ? Eval("""
-			r = MDS_flipflop(r,raw,func1,func2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,\
+			r = MDS_flipflop(r,func1,func2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,\
 			f13,f14,f15,f16,f17,f18,f19,f20,f21,f22,f23,f24,f25,f26,\
 			f27,f28,f29,f30,f31,f32,f33,f34,f35,f36,f37,f38,f39,f40,f41,f42)
 			""") : Eval("")
@@ -1974,3 +1935,9 @@ function MTwe_RestoreAudio(clip c)
 
 ###################################
 ###################################
+
+###################################
+# And this just makes our video return something if we accidently view it
+BlankClip(length=240, width=640, height=480, pixel_type="RGB32")
+Subtitle("This is MDS.avsi! Import this script into your AVS, or place it in your avisynth plugin directory.")
+Subtitle("Also, load your avi after you import, because this help clip is returned by the import line!",y = 50)

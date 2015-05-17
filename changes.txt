@@ -1,0 +1,37 @@
+MDS Changelog:
+
+Revision 5 (big rewrite):
+Divorced the Layouts from the Tweening with a new library
+Redid the work functions to support ease type functions
+Integration of rotation into the tweening functions as standard
+Using a 'better' rotation library as standard, 'rotate', which has less of the uneeded features of zoom
+Added 3DS support.
+Ensured all variables have a healthy set of names corresponding to their purpose
+Allowed for setting temporary order overrides, emulating the functionally of "OnTop" variable of older revisions
+Restore ability to pick output sizes between Wide and 5x4
+Added project to github
+
+Revions 4:
+More stuff for R4 from YamiNoSenshi. Thanks YamiNoSenshi!
+Added Vertical Mode, just call MDS_SetVerticalMode() And use MDS_Book or MDS_BookGap! Technically works with everything else but uses a 3x multiple - use after SetParams
+Added transition effect to go from VertStack to... Vertstack rotated on its side? You probably want to call MDS_BookA afterwards. -
+MDS_VStackToRotated and MDS_RotatedToVStack. They have an optional param to select which way to rotate which will be remembered across multiple calls.
+Added 'step' params to resize and positioning function, in case this is useful for more advanced functions. Will just be an integer from 0 to 29.
+Fixed resize methods for immediate function to match those used in animated (relevant to lower res videos)
+Changed the way MDS_AnimFunc and MDS_PositionFunc get called, now they let you change the core animation that's at work, which lets you actually accomplish things by changing them, unlike previous attempts.
+Added MDS_DraftSettings and MDS_QualitySettings, which are some presets for blockpreserve and resize filters so that people who don't actually want
+  to know every detail of this stupid overengineered system can get smoother (but slower to process) results
+
+Revision 3:  (NB: original Rev 3 has typo, was line 322, has -MDS_QSzY instead of -MDS_QSzX )
+Got some ideas of stuff to add for R3 from Admiral H. Curtiss, and Captain Flame Guy, and the Tech Support Crowd helped a bit too
+Fixed some stupid bugs with TopO and BottomO
+Added in automated better sizing below 1x scale
+Add 4th param to most 3 param calls to 'undo'
+FlipFlop function?
+Create functions that allow you to change additional filters
+Add in functions for help with custom transitions
+
+Revision 2:
+Have some way to have frame A drawn before frame B, should be pretty easy to do with an eval/default values
+Make a function to set the variables yourself and then call functions to perform them
+Make some functions that make it easier to perform eg Fades/Dissolves without desyncing the two videos
