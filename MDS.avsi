@@ -21,9 +21,13 @@
 # For a DS game, this will be a 256x384 video. For a 3DS game, this will be 400x480 video, with the lower screen centered in its section (since it is only 320x240)
 # A couple of png images are available that will show what a video should look like.
 
-# Temporary Readme can be found here:       http://lpix.org/sslptest/index.php?id=10443
+# See the readme for a guide on usage,
+# the DS_Test.avs and 3DS_Test.avs for a quickstart setup
+# Review the enclosed WebMs for the test output (at half regular resolution)
 
 # This is revision 5 of this library. For a list of Changes, see changes.txt
+
+# This is released under an MIT licence, see LICENSE
 
 ###################################################
 ############# Variables and Constants #############
