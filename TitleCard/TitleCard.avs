@@ -1,16 +1,7 @@
 import("MDS.avsi")
 
-raw = stackvertical(ImageSource("MDS_TC_Red.png",0,1000,fps=30,pixel_type="RGB32").AudioDub(blankclip()),ImageSource("MDS_TC_Blue.png",0,1000,fps=30,pixel_type="RGB32").AudioDub(blankclip()))
-
-MDS_SetAFC(30)
-MDS_QualitySettings()
-MDS_SetupDS(raw)
-
-
-
-top = crop(raw,0,0,0,384)
-bot = crop(raw,0,384,0,0)
-
+top = ImageSource("MDS_TC_Red.png",0,1000,fps=30,pixel_type="RGB32").AudioDub(blankclip())
+bot = ImageSource("MDS_TC_Blue.png",0,1000,fps=30,pixel_type="RGB32").AudioDub(blankclip())
 
 top = top.subtitle("What is MDS.avsi?\nWhat does it do?",256,(384/2),0,299,"Nathan",64,$FFFFFF,000000,5,30,2)
 
@@ -30,19 +21,15 @@ bot = bot.subtitle("Rotations!",256,1.7*384 / 3,800,999,"Nathan",64,$FFFFFF,0000
 
 Ex = ImageSource("MDS_TC_Green.png",0,1000,fps=30,pixel_type="RGB32").Subtitle("And more???",256,1.7*384/3,0,1000,"Nathan",64,$FFFFFF,000000,5,30,2)
 
-MTwn_SetRaw("T",top)
-MTwn_SetRaw("B",bot)
+MDS_SetAFC(30)
+MDS_QualitySettings()
+MDS_SetupDS(top,top_override = top,bot_override = bot)
 
-# Load in an extra component:
 MTwn_SetRaw("Ex",Ex)
-# Set it up with defaults
 MTwn_SetupID("Ex")
-# Mod our MTwn_Order
-global MTwn_Order = MTwn_Order ",Ex"
-# Set the initial position for this element
+global MTwn_Order = "T,B,Ex"
 MTwn_SetTargets("Ex", MDS_Wrk_w +MDS_A_w,Mds_Wrk_h / 2 , MDS_A_2w,MDS_A_2h, 0,true)
 
-# Continue as normal...
 MDS_Custom_TargetData(MDS_A_2w,MDS_A_2h,MDS_A_2w,MDS_A_2h,  MDS_Wrk_w / 2, -MDS_A_h , MDS_Wrk_w / 2, MDS_Wrk_h +MDS_A_h, 0,0, true,true)
 MDS_Custom()
 
@@ -65,7 +52,6 @@ MDS_VStackA(850)
 MDS_Custom_TargetData(MDS_A_2w,MDS_A_2h,MDS_A_2w,MDS_A_2h,  MDS_Wrk_w / 2, -MDS_A_h , MDS_Wrk_w / 2, MDS_Wrk_h +MDS_A_h, 0,0, true,true)
 MDS_CustomA(900)
 
-# Start dealing with Ex again:
 MTwn_SetTargets("Ex", -MDS_A_w,Mds_Wrk_h / 2, MDS_A_2w,MDS_A_2h, 0,true)
 MDS_CustomA(930)
 
