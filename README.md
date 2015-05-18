@@ -2,7 +2,8 @@
 Avisynth library to assist with tweening DS footage between a selection of layouts.
 
 ![Animation showing what MDS does](TitleCard/Titlecard.gif)
-(Thanks Farrin N. Abbott, CopyCatFilms, [title card](url=http://www.copycatfilms.com/bloggin/silent-movie-title-card-free-download/) & Peter Wiegel, [font](url=http://www.1001fonts.com/nathan-font.html))
+
+(Thanks Farrin N. Abbott, CopyCatFilms, [title card](http://www.copycatfilms.com/bloggin/silent-movie-title-card-free-download/) & Peter Wiegel, [font](http://www.1001fonts.com/nathan-font.html))
 
 ## What is it?
 
