@@ -1,5 +1,5 @@
 # MDS
-Avisynth library to assist with tweening DS footage between a selection of layouts. (gifv link of VV)[http://i.imgur.com/a8s7OwI.gifv]
+Avisynth library to assist with tweening DS footage between a selection of layouts. [gifv link of VV](http://i.imgur.com/a8s7OwI.gifv)
 
 ![Animation showing what MDS does](TitleCard/Titlecard.gif)
 
