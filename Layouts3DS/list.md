@@ -1,4 +1,6 @@
-# MDS Layouts  
+# M3DS Layouts  
+Note for the purpoes of showing where screens are, these images are captured with 'Setup3DS(...,wide = true)'.  
+If wide is disabled, the Top 3DS screen will fill the entire viewport.
 ## Conventional  
 
 **MDS_VStack(clip c, int "frame", int "frame2")**  
@@ -75,7 +77,7 @@ Bottom screen @ 4x, centered. Top screen @ 1x overlayed upper left corner.
 **MDS_TopC(clip c, int "frame", int "frame2")**  
 **MDS_TopCA(clip c, int "frame", int "frame2")**  
 ![TopC()](TopC.png)  
-Top screen @ 4x, left side of viewport. Bottom screen @ 1x, lower right corner.  
+Top screen @ 4x, centere of viewport due to size. Bottom screen @ 1x, lower right corner.  
 
 
 **MDS_BotC(clip c, int "frame", int "frame2")**  
@@ -94,26 +96,26 @@ Bottom screen @ 4x, right side. Top screen @ 1x, upper left corner.
 **MDS_SBSL(clip c, int "frame", int "frame2")**  
 **MDS_SBSLA(clip c, int "frame", int "frame2")**  
 ![SBSL()](SBSL.png)  
-Top screen on left @ 3x, Bottom on right @ 2x.  
+Top screen on left @ 3x, Bottom on right @ whatever's left.  
 
 
 **MDS_SBSR(clip c, int "frame", int "frame2")**  
 **MDS_SBSRA(clip c, int "frame", int "frame2")**  
 ![SBSR()](SBSR.png)  
-Top screen on left @ 2x, Bottom on right @ 3x.  
+Bottom on right @ 3x, Top screen on left @ whatever's left.
 
 ## 'Book' style
 
 **MDS_Book(clip c, int "frame", int "frame2", bool "RightInstead")**  
 **MDS_BookA(clip c, int "frame", int "frame2", bool "RightInstead")**  
 ![Book()](Book.png)  
-3x magnification. Book mode (ie, rotated 90 degrees) with no gap. Set RightInstead to true to rotate clockwise.  
+Book mode (ie, rotated 90 degrees) with no gap. Set RightInstead to true to rotate clockwise.  
 
 
 **MDS_BookCGap(clip c, int "frame", int "frame2", bool "RightInstead")**  
 **MDS_BookCGapA(clip c, int "frame", int "frame2", bool "RightInstead")**  
 ![BookCGap()](BookCGap.png)  
-3x magnification. Book mode (ie, rotated 90 degrees) with screens placed as far apart as they can be. Set RightInstead to true to rotate clockwise.  
+Book mode (ie, rotated 90 degrees) with screens placed as far apart as they can be. Set RightInstead to true to rotate clockwise.  
 
 
 **MDS_BookGap(clip c, int "frame", int "frame2", string "gap", bool "RightInstead")**  
