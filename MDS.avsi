@@ -395,8 +395,11 @@ function intMDS_BotC()
 	MTwn_SetTargets("T", round((MDS_Wrk_w - MDS_A_4w - MDS_A_w) / 2),0, 								MDS_A_w,MDS_A_h, 0,false)
 	MTwn_SetTargets("B", round((MDS_Wrk_w - MDS_A_4w - MDS_A_w) / 2) + MDS_A_w ,0, 						MDS_A_4w,MDS_A_4h, 0,false)
 
-	# Ensure we always at least show the bottom only - I don't think anyone will use this layouts for 3DS anyway
-	MTWN_SetTargets("T3D", M3DS_Wrk_w - M3DS_B_4w - M3DS_T_w,0,  								M3DS_T_w,M3DS_T_h, 0,false)
+	# 3DS is TOO WIDE!
+	remwidth = M3DS_Wrk_w - M3DS_B_4w
+	remscale = float(remwidth) / M3DS_T_w
+	
+	MTWN_SetTargets("T3D", 0,0,  																round(M3DS_T_w * remscale),round(M3DS_T_h * remscale), 0,false)
 	MTWN_SetTargets("B3D", M3DS_Wrk_w - M3DS_B_4w, 0, 											M3DS_B_4w, M3DS_B_4h, 0,false)
 }
 function MDS_BotC(clip c, int "frame", int "frame2")
