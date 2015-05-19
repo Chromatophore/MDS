@@ -5,6 +5,7 @@
 **MDS_VstackA(clip c, int "frame", int "frame2")**  
 ![VStack()](VStack.png)  
 2x magnification. Stacked vertically.  
+  
 ---
 **MDS_VStackGap(clip c, int "frame", int "frame2", string "gap")**  
 **MDS_VStackGapA(clip c, int "frame", int "frame2", string "gap")**  
