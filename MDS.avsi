@@ -225,7 +225,7 @@ function MDS_ResetLastframe()
 
 ###################################
 # MDS_SetupDS initialises MDS and MTwn for use with standard DS footage
-function MDS_SetupDS(clip raw, bool "wide", int "blockpreserve", string "layout")
+function MDS_SetupDS(clip raw, bool "wide", int "blockpreserve", string "layout", clip "top_override", clip "bot_override")
 {
 	layout = default(layout,"MDS_VStack()")
 	blockpreserve = default(blockpreserve,MDS_BlockPreserve)
@@ -233,8 +233,8 @@ function MDS_SetupDS(clip raw, bool "wide", int "blockpreserve", string "layout"
 
 	global MDS_Wrk_w = wide == true ? MDS_Wrk_w_wide : MDS_Wrk_w_5x4
 
-	top = intMDS_GetTop(raw)
-	bot = intMDS_GetBot(raw)
+	top = default(top_override,intMDS_GetTop(raw))
+	bot = default(bot_override,intMDS_GetBot(raw))
 
 	nan = blockpreserve > 1 ? eval("""
 	MTwn_SetRaw("T",top.PointResize(top.width()*blockpreserve, top.height()*blockpreserve))
@@ -244,7 +244,7 @@ function MDS_SetupDS(clip raw, bool "wide", int "blockpreserve", string "layout"
 	MTwn_SetRaw("B",bot)
 	""")
 
-	MTwn_SetRaw("Audio",raw.KillVideo())
+	MTwn_SetRaw("Audio",raw.KillVideo(),false)
 
 	MTwn_SetupID("T")
 	MTwn_SetupID("B")
@@ -259,7 +259,7 @@ function MDS_SetupDS(clip raw, bool "wide", int "blockpreserve", string "layout"
 
 ###################################
 # MDS_Setup3DS initialises MDS and MTwn for use with new 3DS footage
-function MDS_Setup3DS(clip raw, bool "wide", int "blockpreserve", string "layout")
+function MDS_Setup3DS(clip raw, bool "wide", int "blockpreserve", string "layout", clip "top_override", clip "bot_override")
 {
 	layout = default(layout,"MDS_VStack()")
 	blockpreserve = default(blockpreserve,MDS_BlockPreserve)
@@ -267,8 +267,8 @@ function MDS_Setup3DS(clip raw, bool "wide", int "blockpreserve", string "layout
 
 	global M3DS_Wrk_w = wide == true ? M3DS_Wrk_w_wide : M3DS_Wrk_w_5x4
 
-	top = intM3DS_GetTop(raw)
-	bot = intM3DS_GetBot(raw)
+	top = default(top_override,intM3DS_GetTop(raw))
+	bot = default(bot_override,intM3DS_GetBot(raw))
 
 	nan = blockpreserve > 1 ? eval("""
 	MTwn_SetRaw("T3D",top.PointResize(top.width()*blockpreserve, top.height()*blockpreserve))
@@ -278,7 +278,7 @@ function MDS_Setup3DS(clip raw, bool "wide", int "blockpreserve", string "layout
 	MTwn_SetRaw("B3D",bot)
 	""")
 
-	MTwn_SetRaw("Audio",raw.KillVideo())
+	MTwn_SetRaw("Audio",raw.KillVideo(),false)
 
 	MTwn_SetupID("T3D")
 	MTwn_SetupID("B3D")
@@ -590,26 +590,16 @@ function intMDS_VStackGap()
 
 	MTwn_SetTargets("B3D", floor((M3DS_Wrk_w - New_w) / 2), M3DS_Wrk_h - New_h, 	New_w,New_h, 0,False)
 }
-function MDS_VStackGap(clip c, string "gap")
+function MDS_VStackGap(clip c, int "frame", int "frame2", string "gap")
 {
-	gap = default(gap,string(MDS_VStackGapGap))
-	global MDS_VStackGapGap = Value(gap)
-	MDS_SameCode_Root(c,"intMDS_VStackGap()",false,0)
-}
-function MDS_VStackGapA(clip c, string "gap")
-{
-	gap = default(gap,string(MDS_VStackGapGap))
-	global MDS_VStackGapGap = Value(gap)
-	MDS_SameCode_Root(c,"intMDS_VStackGap()",true,0)
-}
-function MDS_VStackGap(clip c, int frame, int "frame2", string "gap")
-{
+	frame = default(frame,0)
 	gap = default(gap,string(MDS_VStackGapGap))
 	global MDS_VStackGapGap = Value(gap)
 	MDS_SameCode_Root(c,"intMDS_VStackGap()",false,frame,frame2)
 }
-function MDS_VStackGapA(clip c, int frame, int "frame2", string "gap")
+function MDS_VStackGapA(clip c, int "frame", int "frame2", string "gap")
 {
+	frame = default(frame,0)
 	gap = default(gap,string(MDS_VStackGapGap))
 	global MDS_VStackGapGap = Value(gap)
 	MDS_SameCode_Root(c,"intMDS_VStackGap()",true,frame,frame2)
@@ -647,23 +637,15 @@ function intMDS_Book()
 	MTwn_SetTargets("T3D", round((M3DS_Wrk_w - v_dir * th) / 2),floor(M3DS_Wrk_h / 2), 					tw,th, rotation,true)
 	MTwn_SetTargets("B3D", round((M3DS_Wrk_w + v_dir * bh) / 2),floor(M3DS_Wrk_h / 2), 					bw,bh, rotation,true)
 }
-function MDS_Book(clip c, bool "RightInstead")
+function MDS_Book(clip c, int "frame", int "frame2", bool "RightInstead")
 {
-	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
-	MDS_SameCode_Root(c,"intMDS_Book()",false,0)
-}
-function MDS_BookA(clip c, bool "RightInstead")
-{
-	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
-	MDS_SameCode_Root(c,"intMDS_Book()",true,0)
-}
-function MDS_Book(clip c, int frame, int "frame2", bool "RightInstead")
-{
+	frame = default(frame,0)
 	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
 	MDS_SameCode_Root(c,"intMDS_Book()",false,frame,frame2)
 }
-function MDS_BookA(clip c, int frame, int "frame2", bool "RightInstead")
+function MDS_BookA(clip c, int "frame", int "frame2", bool "RightInstead")
 {
+	frame = default(frame,0)
 	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
 	MDS_SameCode_Root(c,"intMDS_Book()",true,frame,frame2)
 }
@@ -723,29 +705,17 @@ function intMDS_BookGap()
 	MTwn_SetTargets("T3D", round((M3DS_Wrk_w - v_dir * th - v_dir * spacer) / 2),floor(M3DS_Wrk_h / 2), 			tw,th, rotation,true)
 	MTwn_SetTargets("B3D", round((M3DS_Wrk_w + v_dir * bh + v_dir * spacer) / 2),floor(M3DS_Wrk_h / 2), 			bw,bh, rotation,true)
 }
-function MDS_BookGap(clip c, string "gap", bool "RightInstead")
+function MDS_BookGap(clip c, int "frame", int "frame2", string "gap", bool "RightInstead")
 {
-	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
-	gap = default(gap,string(MDS_BookGapGap))
-	global MDS_BookGapGap = Value(gap)
-	MDS_SameCode_Root(c,"intMDS_BookGap()",false,0)
-}
-function MDS_BookGapA(clip c, string "gap", bool "RightInstead")
-{
-	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
-	gap = default(gap,string(MDS_BookGapGap))
-	global MDS_BookGapGap = Value(gap)
-	MDS_SameCode_Root(c,"intMDS_BookGap()",true,0)
-}
-function MDS_BookGap(clip c, int frame, int "frame2", string "gap", bool "RightInstead")
-{
+	frame = default(frame,0)
 	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
 	gap = default(gap,string(MDS_BookGapGap))
 	global MDS_BookGapGap = Value(gap)
 	MDS_SameCode_Root(c,"intMDS_BookGap()",false,frame,frame2)
 }
-function MDS_BookGapA(clip c, int frame, int "frame2", string "gap", bool "RightInstead")
+function MDS_BookGapA(clip c, int "frame", int "frame2", string "gap", bool "RightInstead")
 {
+	frame = default(frame,0)
 	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
 	gap = default(gap,string(MDS_BookGapGap))
 	global MDS_BookGapGap = Value(gap)
@@ -783,23 +753,15 @@ function intMDS_BookCGap()
 	MTwn_SetTargets("T3D", M3DS_Wrk_w * v_mult + v_dir * (th / 2),floor(M3DS_Wrk_h / 2), 				tw,th, rotation,true)
 	MTwn_SetTargets("B3D", M3DS_Wrk_w * (1 - v_mult) - v_dir * (bh / 2),floor(M3DS_Wrk_h / 2), 			bw,bh, rotation,true)
 }
-function MDS_BookCGap(clip c, bool "RightInstead")
+function MDS_BookCGap(clip c, int "frame", int "frame2", bool "RightInstead")
 {
-	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
-	MDS_SameCode_Root(c,"intMDS_BookCGap()",false,0)
-}
-function MDS_BookCGapA(clip c, bool "RightInstead")
-{
-	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
-	MDS_SameCode_Root(c,"intMDS_BookCGap()",true,0)
-}
-function MDS_BookCGap(clip c, int frame, int "frame2", bool "RightInstead")
-{
+	frame = default(frame,0)
 	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
 	MDS_SameCode_Root(c,"intMDS_BookCGap()",false,frame,frame2)
 }
-function MDS_BookCGapA(clip c, int frame, int "frame2", bool "RightInstead")
+function MDS_BookCGapA(clip c, int "frame", int "frame2", bool "RightInstead")
 {
+	frame = default(frame,0)
 	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
 	MDS_SameCode_Root(c,"intMDS_BookCGap()",true,frame,frame2)
 }
@@ -829,23 +791,15 @@ function intMDS_Book_VStackScale()
 	MTwn_SetTargets("T3D", round((M3DS_Wrk_w - v_dir * M3DS_T_2h) / 2),floor(M3DS_Wrk_h / 2), 			M3DS_T_2w,M3DS_T_2h, rotation,true)
 	MTwn_SetTargets("B3D", round((M3DS_Wrk_w + v_dir * M3DS_B_2h) / 2),floor(M3DS_Wrk_h / 2), 			M3DS_B_2w,M3DS_B_2h, rotation,true)
 }
-function MDS_Book_VStackScale(clip c, bool "RightInstead")
+function MDS_Book_VStackScale(clip c, int "frame", int "frame2", bool "RightInstead")
 {
-	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
-	MDS_SameCode_Root(c,"intMDS_Book_VStackScale()",false,0)
-}
-function MDS_Book_VStackScaleA(clip c, bool "RightInstead")
-{
-	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
-	MDS_SameCode_Root(c,"intMDS_Book_VStackScale()",true,0)
-}
-function MDS_Book_VStackScale(clip c, int frame, int "frame2", bool "RightInstead")
-{
+	frame = default(frame,0)
 	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
 	MDS_SameCode_Root(c,"intMDS_Book_VStackScale()",false,frame,frame2)
 }
-function MDS_Book_VStackScaleA(clip c, int frame, int "frame2", bool "RightInstead")
+function MDS_Book_VStackScaleA(clip c, int "frame", int "frame2", bool "RightInstead")
 {
+	frame = default(frame,0)
 	global MDS_RotatedToRight = Default(RightInstead,MDS_RotatedToRight)
 	MDS_SameCode_Root(c,"intMDS_Book_VStackScale()",true,frame,frame2)
 }
@@ -1275,9 +1229,12 @@ function MTwn_Init()
 # MTween Functions
 
 # Sets the raw data for an ID
-function MTwn_SetRaw(string ID, clip c)
+function MTwn_SetRaw(string ID, clip c, bool "killaud")
 {
-	eval("global MTwn_data_" + ID + "_raw = c.killaudio()")
+	killaud = default(killaud,true)
+	s = killaud == true ? ".killaudio()" : ""
+
+	eval("global MTwn_data_" + ID + "_raw = c" + s)
 }
 
 ###################################
