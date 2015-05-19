@@ -46,10 +46,10 @@ MDS_SetupDS()
 ```
 
 This should get you started with a vertically stacked layout. From here, provided you follow a couple of rules, you shouldn't have too many problems:  
-1. Always edit in chronological order, lowest frame numbers at the top of your script, highest at the bottom.  
-2. Do your editing before (or after) you use MDS transition effects, or your output will become desynchronised.
+1. Always work in chronological order, lowest frame numbers first.  
+2. Do your editing before you start (or after you stop) using MDS transition effects, or your output will become desynchronised.
 
-From this point, you will call layout functions, an exhaustive list w/images is available for [DS](Layouts/list.md) and [3DS](Layouts3DS/list.md).
+From where your script is now, you can call layout functions, an exhaustive list w/images is available for [DS](Layouts/list.md) and [3DS](Layouts3DS/list.md).
 
 The main thing to know is that there are 2 versions of every layout: MDS_#### and MDS_####A. Functions without an A will apply their new layout instantly. Functions with an A will animate the transition to the new layout (you'll mostly want these probably). Here is a selection of what are probably the most worthwhile layouts. All the built in layouts can be seen in DS_Test.webm, and found in the test AVS files.
 ```
@@ -72,7 +72,7 @@ MDS_BookGapA(1300)
 
 ## Other usage notes
 
-If your content would benefit from being 16:9 widescreen, you can set wide = true when calling SetupDS/Setup3DS. If your content is largely being used with eg BookGap, I would suggest doing so.
+If your content would benefit from being 16:9 widescreen, you can set wide = true when calling SetupDS/Setup3DS. If your content is largely being used with eg BookGap, I would suggest doing this.
 
 You can create custom layouts with MDS_Custom_TargetData and MDS_Custom/MDS_CustomA. Usage notes to follow.
 
