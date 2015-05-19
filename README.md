@@ -32,19 +32,21 @@ To get started, ensure that MDS.avsi is imported if required (ie, when it is not
 ```
 import("MDS.avsi")
 
-# Load Test Footage
+# Load Footage
 Avisource("My_DS_Recording.avi")
 ChangeFPS(60)
+
+# Edit it as required
 Trim(1234,5678)
 
-# Use some higher quality transition effects. If this is too intensive to preview, we can 
+# Use some higher quality transition effects. If this is too intensive to preview, we can use MDS_DraftSettings()
 MDS_QualitySettings()
-# Initialize our project as a DS project:
+# Initialize our project as a DS (as opposed to 3DS) project:
 MDS_SetupDS()
 ```
 
-This should get you started with vertically stacked videos. From here, provided you follow a couple of rules, you shouldn't have too many problems:
-1. Always edit in chronological order, lowest frame numbers at the top of your script, highest at the bottom.
+This should get you started with vertically stacked videos. From here, provided you follow a couple of rules, you shouldn't have too many problems:  
+1. Always edit in chronological order, lowest frame numbers at the top of your script, highest at the bottom.  
 2. Do your editing before (or after) you use MDS transition effects, or your output will become desynchronised.
 
 From this point, you will call layout functions, an exhaustive list w/images is available for [DS](Layouts/list.md) and [3DS](Layouts3DS/list.md).
