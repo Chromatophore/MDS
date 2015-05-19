@@ -3,7 +3,8 @@ import("MDS.avsi")
 # Load Test Footage
 raw = ImageSource("DS_Test.png",0,10000,fps=60,pixel_type="RGB32").AudioDub(blankclip())
 raw = raw.ChangeFPS(60)
-raw = audiodub(raw,wavsource("testaudio.wav").loop(60).fadeout(60))
+# Test Audio: a 3 hz / 7 hz audio file used to check if there are audio desyncs (causes popping when tracking though)
+#raw = audiodub(raw,wavsource("testaudio.wav").loop(116).fadeout(100))
 
 # Create local variables to space out our transitions. We will have a transition every 200 frames.
 fnum = 200
