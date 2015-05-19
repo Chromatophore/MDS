@@ -1,5 +1,5 @@
 # MDS
-Avisynth library to assist with tweening DS footage between a selection of layouts. [gifv link of VV](http://i.imgur.com/a8s7OwI.gifv)
+Avisynth library to assist with tweening Nintendo DS & 3DS footage between a selection of layouts. [gifv link of VV](http://i.imgur.com/a8s7OwI.gifv)
 
 ![Animation showing what MDS does](TitleCard/Titlecard.gif)
 
@@ -7,7 +7,7 @@ Avisynth library to assist with tweening DS footage between a selection of layou
 
 ## What is it?
 
-MDS is an avisynth library script designed to easily facilitate the use of animated transition effects from one layout of a selection of clips to another (generating in between frames, otherwise known as 'tweening'). Generally, you are required to include an origin points when animating clips in this fashion, which can quickly make editing difficult and slow. However, MDS is able to recall this information for you when you edit in a chronological order, allowing you to quickly produce clean, easy to read scripts with a large number of effects, which remain easy to revise and transfer to other similar projects. MDS really is a DS specific frontend to MTwn, the tweening engine that does most of the hard work.
+MDS is an avisynth library script designed to easily facilitate the use of animated transition effects from one layout of a selection of clips to another (generating in between frames, otherwise known as 'tweening'). Generally, you are required to include an origin points when animating clips in this fashion, which can quickly make editing difficult and slow. However, MDS is able to store and recall this information for you when you edit in a chronological order, allowing you to quickly produce clean, easy to read scripts with a large number of effects, which remain easy to revise and transfer to other similar projects. Really, MDS is a DS/3DS specific frontend to MTwn, a more somewhat versatile tweening engine that does most of the hard work.
 
 ## Latest version
 
