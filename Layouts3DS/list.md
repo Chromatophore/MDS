@@ -83,7 +83,7 @@ Top screen @ 4x, centere of viewport due to size. Bottom screen @ 1x, lower righ
 **MDS_BotC(clip c, int "frame", int "frame2")**  
 **MDS_BotCA(clip c, int "frame", int "frame2")**  
 ![BotC()](BotC.png)  
-Bottom screen @ 4x, right side. Top screen @ 1x, upper left corner.  
+Bottom screen @ 4x, right side. Top screen @ Whatever's left, upper left corner.  
 
 ## Side by Side
 
