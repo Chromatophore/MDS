@@ -5,14 +5,12 @@
 **MDS_VstackA(clip c, int "frame", int "frame2")**  
 ![VStack()](VStack.png)  
 2x magnification. Stacked vertically.  
-
-
+---
 **MDS_VStackGap(clip c, int "frame", int "frame2", string "gap")**  
 **MDS_VStackGapA(clip c, int "frame", int "frame2", string "gap")**  
 ![VStackGap()](VStackGap.png)  
 Stacked vertically with an effectively 92 (default) pixel gap between the screens.  
-
-
+---
 **MDS_TopV(clip c, int "frame", int "frame2")**  
 **MDS_TopVA(clip c, int "frame", int "frame2")**  
 ![TopV()](TopV.png)  
@@ -47,7 +45,6 @@ Stacked vertically with an effectively 92 (default) pixel gap between the screen
 **MDS_QuickBotA(clip c, int "frame", int "frame2")**  
 ![QuickBot()](QuickBot.png)  
 4x magnification. Bring Bottom screen in over the Top.  
-
 
 **MDS_TopO(clip c, int "frame", int "frame2")**  
 **MDS_TopOA(clip c, int "frame", int "frame2")**  
