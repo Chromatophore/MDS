@@ -45,7 +45,7 @@ MDS_QualitySettings()
 MDS_SetupDS()
 ```
 
-This should get you started with vertically stacked videos. From here, provided you follow a couple of rules, you shouldn't have too many problems:  
+This should get you started with a vertically stacked layout. From here, provided you follow a couple of rules, you shouldn't have too many problems:  
 1. Always edit in chronological order, lowest frame numbers at the top of your script, highest at the bottom.  
 2. Do your editing before (or after) you use MDS transition effects, or your output will become desynchronised.
 
