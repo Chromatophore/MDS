@@ -1,4 +1,7 @@
 # MDS
+
+[Download me!](https://raw.githubusercontent.com/Chromatophore/MDS/master/MDS.avsi)
+
 Avisynth library to assist with tweening Nintendo DS & 3DS footage between a selection of layouts. [gifv link of VV](http://i.imgur.com/a8s7OwI.gifv)
 
 ![Animation showing what MDS does](TitleCard/Titlecard.gif)
