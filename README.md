@@ -22,7 +22,7 @@ In order to use this library, you will need a functioning installation of avisyn
 
 ## Licensing
 
-Please see the file called LICENSE.
+Please see the file called LICENSE. It's a standard MIT license, so go nuts.
 
 ## Usage
 
