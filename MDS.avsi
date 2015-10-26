@@ -1140,9 +1140,12 @@ function MDS_SameCode_Root(clip c, string LayoutName, bool IsAnimated, int frame
 	}
 
 	# 4) Obtain OrderOverride value
-	OrderOver1 = UnDefined()
-	OrderOver2 = UnDefined()
-	l = MDS_UseOrderOverRide > 1 ? eval("OrderOver2 = MDS_StoredOrderOverride") : 0
+	OrderOver1 = MTwn_Order		# Avisynth 2.5 Compatability - changed from UnDefined(). It's a hack
+	OrderOver2 = MTwn_Order		# But whatever, I don't think it makes a big difference.
+	# Our problem is that, both of these consitions can be true:
+	l = MDS_UseOrderOverRide > 1 ? eval("""
+	OrderOver2 = MDS_StoredOrderOverride
+	""") : 0
 	l = MDS_UseOrderOverRide > 0 ? eval("""
 	OrderOver1 = MDS_StoredOrderOverride
 	global MDS_UseOrderOverRide = MDS_UseOrderOverRide - 1
